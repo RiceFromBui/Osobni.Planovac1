@@ -9,78 +9,68 @@ namespace Osobni.Planovac1
     {
         private const string FILE_NAME = "events.json";
 
-        public static Dictionary<string, Dictionary<string, string>> LoadAll()
+        // ZMĚNA: Uvnitř už není <string, string>, ale <string, EventModel>
+        public static Dictionary<string, Dictionary<string, EventModel>> LoadAll()
         {
             if (!File.Exists(FILE_NAME))
-                return new Dictionary<string, Dictionary<string, string>>();
+                return new Dictionary<string, Dictionary<string, EventModel>>();
 
             string json = File.ReadAllText(FILE_NAME);
-            return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json)
-                   ?? new Dictionary<string, Dictionary<string, string>>();
+            try
+            {
+                return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, EventModel>>>(json)
+                       ?? new Dictionary<string, Dictionary<string, EventModel>>();
+            }
+            catch
+            {
+                return new Dictionary<string, Dictionary<string, EventModel>>(); // Kdyby byl soubor rozbitý
+            }
         }
 
-        public static void SaveAll(Dictionary<string, Dictionary<string, string>> allData)
+        public static void SaveAll(Dictionary<string, Dictionary<string, EventModel>> allData)
         {
             string json = JsonSerializer.Serialize(allData, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(FILE_NAME, json);
         }
 
-        public static void SaveAllForDate(DateTime date, Dictionary<string, string> entries)
+        public static void SaveEvent(DateTime date, string time, EventModel eventData)
         {
             var all = LoadAll();
             string key = date.ToString("yyyy-MM-dd");
-            if (entries.Count > 0)
-                all[key] = entries;
+
+            if (!all.ContainsKey(key))
+                all[key] = new Dictionary<string, EventModel>();
+
+            // Pokud je text prázdný, mažeme. Jinak ukládáme.
+            if (string.IsNullOrWhiteSpace(eventData.Text))
+            {
+                if (all[key].ContainsKey(time))
+                    all[key].Remove(time);
+            }
             else
+            {
+                all[key][time] = eventData;
+            }
+
+            // Úklid prázdných dní
+            if (all[key].Count == 0)
                 all.Remove(key);
+
             SaveAll(all);
         }
-
-        public static string GetNoteForTime(DateTime date, string time)
-        {
-            var all = LoadAll();
-            string key = date.ToString("yyyy-MM-dd");
-            if (all.TryGetValue(key, out var entries))
-            {
-                if (entries.TryGetValue(time, out var note))
-                    return note;
-            }
-            return string.Empty;
-        }
-
+        // Vlož do souboru EventStorage.cs
         public static void ExportDay(DateTime date, string path)
         {
             var all = LoadAll();
             string key = date.ToString("yyyy-MM-dd");
-            if (!all.ContainsKey(key))
-                return;
+
+            if (!all.ContainsKey(key)) return;
 
             var lines = new List<string>();
             foreach (var entry in all[key])
             {
-                lines.Add($"{entry.Key} - {entry.Value}");
-            }
-
-            File.WriteAllLines(path, lines);
-        }
-
-        public static void ExportMonth(int year, int month, string path)
-        {
-            var all = LoadAll();
-            var lines = new List<string>();
-
-            foreach (var kvp in all)
-            {
-                if (DateTime.TryParse(kvp.Key, out var date))
-                {
-                    if (date.Year == year && date.Month == month)
-                    {
-                        foreach (var entry in kvp.Value)
-                        {
-                            lines.Add($"{kvp.Key} {entry.Key} - {entry.Value}");
-                        }
-                    }
-                }
+                // entry.Value je teď EventModel, takže musíme sáhnout na .Category a .Text
+                lines.Add($"{entry.Key} [{entry.Value.Category}] - {entry.Value.Text}");
             }
 
             File.WriteAllLines(path, lines);

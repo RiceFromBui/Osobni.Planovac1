@@ -19,81 +19,90 @@ namespace Osobni.Planovac1
 
         private void InitializeComponent()
         {
-            this.scrollPanel = new System.Windows.Forms.Panel();
-            this.tblTimeline = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSaveAll = new System.Windows.Forms.Button();
-            this.btnExport = new System.Windows.Forms.Button();
-            this.btnClearAll = new System.Windows.Forms.Button();
-            this.scrollPanel.SuspendLayout();
-            this.SuspendLayout();
-
+            scrollPanel = new Panel();
+            tblTimeline = new TableLayoutPanel();
+            btnSaveAll = new Button();
+            btnExport = new Button();
+            btnClearAll = new Button();
+            scrollPanel.SuspendLayout();
+            SuspendLayout();
+            // 
             // scrollPanel
-            this.scrollPanel.AutoScroll = true;
-            this.scrollPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.scrollPanel.Location = new System.Drawing.Point(12, 12);
-            this.scrollPanel.Name = "scrollPanel";
-            this.scrollPanel.Size = new System.Drawing.Size(460, 720);
-            this.scrollPanel.Controls.Add(this.tblTimeline);
-
+            // 
+            scrollPanel.AutoScroll = true;
+            scrollPanel.Controls.Add(tblTimeline);
+            scrollPanel.Dock = DockStyle.Top;
+            scrollPanel.Location = new Point(0, 0);
+            scrollPanel.Name = "scrollPanel";
+            scrollPanel.Size = new Size(424, 675);
+            scrollPanel.TabIndex = 4;
+            scrollPanel.Paint += scrollPanel_Paint;
+            // 
             // tblTimeline
-            this.tblTimeline.AutoSize = true;
-            this.tblTimeline.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tblTimeline.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tblTimeline.ColumnCount = 2;
-            this.tblTimeline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tblTimeline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblTimeline.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tblTimeline.Location = new System.Drawing.Point(0, 0);
-            this.tblTimeline.Name = "tblTimeline";
-            this.tblTimeline.RowCount = 1;
-            this.tblTimeline.Size = new System.Drawing.Size(460, 0);
-            this.tblTimeline.TabIndex = 0;
-
+            // 
+            tblTimeline.AutoSize = true;
+            tblTimeline.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tblTimeline.ColumnCount = 2;
+            tblTimeline.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 52F));
+            tblTimeline.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tblTimeline.Dock = DockStyle.Top;
+            tblTimeline.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
+            tblTimeline.Location = new Point(0, 0);
+            tblTimeline.Name = "tblTimeline";
+            tblTimeline.RowCount = 1;
+            tblTimeline.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblTimeline.Size = new Size(424, 20);
+            tblTimeline.TabIndex = 0;
+            // 
             // btnSaveAll
-            this.btnSaveAll.Location = new System.Drawing.Point(12, 740);
-            this.btnSaveAll.Name = "btnSaveAll";
-            this.btnSaveAll.Size = new System.Drawing.Size(460, 30);
-            this.btnSaveAll.TabIndex = 1;
-            this.btnSaveAll.Text = "Uložit vše";
-            this.btnSaveAll.UseVisualStyleBackColor = true;
-            this.btnSaveAll.Click += new System.EventHandler(this.btnSaveAll_Click);
-
+            // 
+            btnSaveAll.Location = new Point(10, 694);
+            btnSaveAll.Name = "btnSaveAll";
+            btnSaveAll.Size = new Size(402, 28);
+            btnSaveAll.TabIndex = 1;
+            btnSaveAll.Text = "Uložit vše";
+            btnSaveAll.UseVisualStyleBackColor = true;
+            btnSaveAll.Click += btnSaveAll_Click;
+            // 
             // btnExport
-            this.btnExport.Location = new System.Drawing.Point(12, 780);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(460, 30);
-            this.btnExport.TabIndex = 2;
-            this.btnExport.Text = "Exportovat den";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-
+            // 
+            btnExport.Location = new Point(10, 731);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new Size(402, 28);
+            btnExport.TabIndex = 2;
+            btnExport.Text = "Exportovat den";
+            btnExport.UseVisualStyleBackColor = true;
+            btnExport.Click += btnExport_Click;
+            // 
             // btnClearAll
-            this.btnClearAll.Location = new System.Drawing.Point(12, 820);
-            this.btnClearAll.Name = "btnClearAll";
-            this.btnClearAll.Size = new System.Drawing.Size(460, 30);
-            this.btnClearAll.TabIndex = 3;
-            this.btnClearAll.Text = "Vymazat celý den";
-            this.btnClearAll.UseVisualStyleBackColor = true;
-            this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
-
+            // 
+            btnClearAll.Location = new Point(10, 769);
+            btnClearAll.Name = "btnClearAll";
+            btnClearAll.Size = new Size(402, 28);
+            btnClearAll.TabIndex = 3;
+            btnClearAll.Text = "Vymazat celý den";
+            btnClearAll.UseVisualStyleBackColor = true;
+            btnClearAll.Click += btnClearAll_Click;
+            // 
             // DailySchedulerForm
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 861);
-            this.Controls.Add(this.btnClearAll);
-            this.Controls.Add(this.btnExport);
-            this.Controls.Add(this.btnSaveAll);
-            this.Controls.Add(this.scrollPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "DailySchedulerForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Denní plán";
-            this.Load += new System.EventHandler(this.DailySchedulerForm_Load);
-            this.scrollPanel.ResumeLayout(false);
-            this.scrollPanel.PerformLayout();
-            this.ResumeLayout(false);
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(424, 807);
+            Controls.Add(btnClearAll);
+            Controls.Add(btnExport);
+            Controls.Add(btnSaveAll);
+            Controls.Add(scrollPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "DailySchedulerForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Denní plán";
+            Load += DailySchedulerForm_Load;
+            scrollPanel.ResumeLayout(false);
+            scrollPanel.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
