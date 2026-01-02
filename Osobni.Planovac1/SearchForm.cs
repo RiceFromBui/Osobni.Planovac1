@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public class SearchForm : Form
+    public class SearchForm : Form //Formulář pro vyhledávání a filtrování aktivit
     {
         private DataGridView grid;
         private ComboBox cmbFilter;
@@ -18,19 +18,17 @@ namespace Osobni.Planovac1
             this.Size = new Size(800, 500);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // 1. Lišta filtru
             var panelTop = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Color.WhiteSmoke };
 
             var lblFilter = new Label { Text = "Filtr kategorie:", Location = new Point(20, 15), AutoSize = true };
             cmbFilter = new ComboBox { Location = new Point(120, 12), Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
-            cmbFilter.Items.Add("Všechny"); // Default
+            cmbFilter.Items.Add("Všechny"); 
             cmbFilter.SelectedIndex = 0;
-            cmbFilter.SelectedIndexChanged += (s, e) => LoadData(); // Automatický refresh
+            cmbFilter.SelectedIndexChanged += (s, e) => LoadData(); 
 
             panelTop.Controls.Add(lblFilter);
             panelTop.Controls.Add(cmbFilter);
 
-            // 2. Tabulka výsledků
             grid = new DataGridView
             {
                 Dock = DockStyle.Fill,
@@ -45,11 +43,10 @@ namespace Osobni.Planovac1
             grid.Columns.Add("Category", "Kategorie");
             grid.Columns.Add("Text", "Aktivita");
 
-            // Přidání do okna
             this.Controls.Add(grid);
             this.Controls.Add(panelTop);
 
-            LoadData(); // Načíst data při startu
+            LoadData(); 
         }
 
         private void LoadData()
@@ -60,13 +57,11 @@ namespace Osobni.Planovac1
             // Načtení všech dat
             var allData = EventStorage.LoadAll();
 
-            // Unikátní seznam kategorií pro naplnění filtru (pokud bychom chtěli dynamicky)
             HashSet<string> categoriesFound = new HashSet<string> { "Všechny" };
 
-            // Procházení dat
             foreach (var datePair in allData) // Datum
             {
-                foreach (var timePair in datePair.Value) // Čas
+                foreach (var timePair in datePair.Value) //čas
                 {
                     EventModel ev = timePair.Value;
                     categoriesFound.Add(ev.Category);
@@ -78,9 +73,7 @@ namespace Osobni.Planovac1
                     }
                 }
             }
-
-            // Aktualizace seznamu v ComboBoxu jen poprvé (aby se nám nemizely kategorie při filtrování)
-            if (cmbFilter.Items.Count == 1)
+            if (cmbFilter.Items.Count == 1) //Aktualizace kategorií ve filtru
             {
                 foreach (var cat in categoriesFound)
                 {

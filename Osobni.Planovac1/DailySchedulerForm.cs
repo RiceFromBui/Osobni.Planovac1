@@ -1,5 +1,4 @@
-﻿// File: DailySchedulerForm.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,7 +10,7 @@ namespace Osobni.Planovac1
         private int day, month, year;
         private readonly Action reloadCalendar;
         private Dictionary<string, EventModel> dailyEntries = new();
-        public DailySchedulerForm(int day, int month, int year, Action reloadCalendar)
+        public DailySchedulerForm(int day, int month, int year, Action reloadCalendar) //Formulář pro denní plánovač
         {
             InitializeComponent();
             this.day = day;
@@ -23,7 +22,6 @@ namespace Osobni.Planovac1
         private void DailySchedulerForm_Load(object sender, EventArgs e)
         {
             DateTime date = new DateTime(year, month, day);
-            // Tady musíme správně načíst ten slovník modelů
             var allData = EventStorage.LoadAll();
             string key = date.ToString("yyyy-MM-dd");
 
@@ -35,22 +33,21 @@ namespace Osobni.Planovac1
             RefreshSlots();
         }
 
-        private void RefreshSlots()
+        private void RefreshSlots() //vykreslí časové sloty a události
         {
             tblTimeline.SuspendLayout();
             tblTimeline.Controls.Clear();
             tblTimeline.RowStyles.Clear();
 
-            // 1. Vytvoříme seznam všech časů, které chceme zobrazit
             List<string> timeSlots = new List<string>();
 
-            // Přidáme standardní hodiny 00:00 - 23:00
+            // Přidá standardní hodiny 00:00 - 23:00
             for (int i = 0; i < 24; i++)
             {
                 timeSlots.Add(i.ToString("D2") + ":00");
             }
 
-            // Přidáme časy z uložených událostí (pokud tam už nejsou), např. "14:30"
+            // Přidá časy z uložených událostí, např. "14:30"
             foreach (var key in dailyEntries.Keys)
             {
                 if (!timeSlots.Contains(key))
@@ -59,18 +56,17 @@ namespace Osobni.Planovac1
                 }
             }
 
-            // Seřadíme časy chronologicky, aby 14:30 bylo pod 14:00
+            // Seřadí časy chronologicky, aby 14:30 bylo pod 14:00
             timeSlots.Sort();
 
-            // 2. Nastavíme tabulku
             tblTimeline.RowCount = timeSlots.Count; // Počet řádků podle počtu časů
 
-            // 3. Vykreslíme řádky
+            // 3. Vykreslí řádky
             for (int i = 0; i < timeSlots.Count; i++)
             {
                 string time = timeSlots[i];
 
-                // Nastavíme výšku řádku
+                // Nastaví výšku řádku
                 tblTimeline.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
 
                 // Label s časem
@@ -83,7 +79,7 @@ namespace Osobni.Planovac1
                     Padding = new Padding(2)
                 };
 
-                // Panel pro událost
+                // Panel pro události
                 var panelSlot = new Panel
                 {
                     Name = "panel_" + time.Replace(":", ""),
@@ -95,8 +91,7 @@ namespace Osobni.Planovac1
                 };
 
                 if (dailyEntries.ContainsKey(time))
-                {
-                    // ... (Zbytek kódu pro vykreslení existující události zůstává stejný) ...
+                {             
                     panelSlot.BackColor = Color.LightGreen;
 
                     var innerLayout = new TableLayoutPanel
@@ -133,7 +128,7 @@ namespace Osobni.Planovac1
                 }
                 else
                 {
-                    // Kliknutí na prázdný panel otevře přidání události
+                    // Kliknutím na prázdný panel se  otevře přidání události
                     panelSlot.Click += (s, ev) => OnTimeSlotClick(time);
                 }
 
@@ -143,7 +138,7 @@ namespace Osobni.Planovac1
             tblTimeline.ResumeLayout();
         }
 
-        private void OnTimeSlotClick(string time)
+        private void OnTimeSlotClick(string time) //Otevře formulář pro přidání/úpravu události
         {
             EventModel currentData = dailyEntries.ContainsKey(time) ? dailyEntries[time] : null;
 
@@ -154,7 +149,6 @@ namespace Osobni.Planovac1
                     // Smazání starého času při změně
                     if (time != form.ResultTime && dailyEntries.ContainsKey(time))
                     {
-                        // Jen pokud tam něco bylo
                         if (currentData != null) dailyEntries.Remove(time);
                     }
 
@@ -193,11 +187,8 @@ namespace Osobni.Planovac1
 
         private void btnSaveAll_Click(object sender, EventArgs e)
         {
-            // Musíme uložit každou položku zvlášť nebo upravit storage na ukládání celého dne.
-            // Pro jednoduchost projdeme položky:
-            DateTime date = new DateTime(year, month, day);
-
-            // Nejprve načteme vše, vymažeme dnešek a nahrajeme nové (aby zmizely smazané)
+            
+            DateTime date = new DateTime(year, month, day); //Uložení změn
             var all = EventStorage.LoadAll();
             string key = date.ToString("yyyy-MM-dd");
 
@@ -213,7 +204,7 @@ namespace Osobni.Planovac1
             this.Close();
         }
 
-        private void btnExport_Click(object sender, EventArgs e)
+        private void btnExport_Click(object sender, EventArgs e) //Export do souboru
         {
             DateTime date = new DateTime(year, month, day);
             using SaveFileDialog dialog = new SaveFileDialog();
@@ -226,9 +217,8 @@ namespace Osobni.Planovac1
                 MessageBox.Show("Export dokončen.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        private void btnAddCustomTime_Click(object sender, EventArgs e)
+        private void btnAddCustomTime_Click(object sender, EventArgs e) //Přidání vlastního času
         {
-            // 1. Zeptáme se na čas
             string timeInput = Microsoft.VisualBasic.Interaction.InputBox(
                 "Zadej čas události (např. 14:30):",
                 "Přidat vlastní čas",
@@ -242,7 +232,7 @@ namespace Osobni.Planovac1
                 return;
             }
 
-            // 2. Zeptáme se na text události
+            
             string noteInput = Microsoft.VisualBasic.Interaction.InputBox(
                 $"Zadej událost pro {timeInput}:",
                 "Nová událost",
@@ -250,16 +240,11 @@ namespace Osobni.Planovac1
 
             if (!string.IsNullOrWhiteSpace(noteInput))
             {
-                // --- ZDE BYLA CHYBA (FIX) ---
-                // Nemůžeme uložit jen text (string). Musíme vytvořit EventModel.
-                // Jako výchozí kategorii dáme třeba "Vlastní" nebo "Obecné".
                 dailyEntries[timeInput] = new EventModel
                 {
                     Text = noteInput,
                     Category = "Vlastní"
                 };
-                // ----------------------------
-
                 RefreshSlots();
             }
         }

@@ -9,7 +9,7 @@ namespace Osobni.Planovac1
     {
         private const string FILE_NAME = "events.json";
 
-        // ZMĚNA: Uvnitř už není <string, string>, ale <string, EventModel>
+        // Třída pro práci s událostmi uloženými v JSON souboru.
         public static Dictionary<string, Dictionary<string, EventModel>> LoadAll()
         {
             if (!File.Exists(FILE_NAME))
@@ -23,17 +23,17 @@ namespace Osobni.Planovac1
             }
             catch
             {
-                return new Dictionary<string, Dictionary<string, EventModel>>(); // Kdyby byl soubor rozbitý
+                return new Dictionary<string, Dictionary<string, EventModel>>();  //Kdyby byl soubor poškozený
             }
         }
-
-        public static void SaveAll(Dictionary<string, Dictionary<string, EventModel>> allData)
+        
+        public static void SaveAll(Dictionary<string, Dictionary<string, EventModel>> allData) //Uloží všechny události do souboru
         {
             string json = JsonSerializer.Serialize(allData, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(FILE_NAME, json);
         }
 
-        public static void SaveEvent(DateTime date, string time, EventModel eventData)
+        public static void SaveEvent(DateTime date, string time, EventModel eventData) //Exportuje události jendoho dne do souboru
         {
             var all = LoadAll();
             string key = date.ToString("yyyy-MM-dd");
@@ -41,7 +41,6 @@ namespace Osobni.Planovac1
             if (!all.ContainsKey(key))
                 all[key] = new Dictionary<string, EventModel>();
 
-            // Pokud je text prázdný, mažeme. Jinak ukládáme.
             if (string.IsNullOrWhiteSpace(eventData.Text))
             {
                 if (all[key].ContainsKey(time))
@@ -58,7 +57,6 @@ namespace Osobni.Planovac1
 
             SaveAll(all);
         }
-        // Vlož do souboru EventStorage.cs
         public static void ExportDay(DateTime date, string path)
         {
             var all = LoadAll();
@@ -69,7 +67,7 @@ namespace Osobni.Planovac1
             var lines = new List<string>();
             foreach (var entry in all[key])
             {
-                // entry.Value je teď EventModel, takže musíme sáhnout na .Category a .Text
+            
                 lines.Add($"{entry.Key} [{entry.Value.Category}] - {entry.Value.Text}");
             }
 

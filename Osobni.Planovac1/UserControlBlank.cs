@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public partial class UserControlBlank : UserControl
+    public partial class UserControlBlank : UserControl //prázdný prvek pro zarovnání kalendáře
     {
         public UserControlBlank()
         {

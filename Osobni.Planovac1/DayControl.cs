@@ -1,10 +1,9 @@
-﻿// File: UserControl1Days.cs
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public partial class DayControl : UserControl
+    public partial class DayControl : UserControl //ovládací prvek pro jednotlivé dny v kalendáři
     {
         public int DayNumber { get; private set; }
         public event EventHandler<int> DayClicked;

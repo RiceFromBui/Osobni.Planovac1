@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Osobni.Planovac1
 {
-    public class EventModel
+    public class EventModel //třída reprezentující jednu událost
     {
         public string Text { get; set; } = "";
-        public string Category { get; set; } = "Obecné"; // Výchozí kategorie
+        public string Category { get; set; } = "Obecné"; 
     }
 }

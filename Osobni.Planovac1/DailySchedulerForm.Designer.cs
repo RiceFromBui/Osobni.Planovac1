@@ -1,6 +1,4 @@
-﻿// File: DailySchedulerForm.Designer.cs
-
-namespace Osobni.Planovac1
+﻿namespace Osobni.Planovac1
 {
     partial class DailySchedulerForm
     {

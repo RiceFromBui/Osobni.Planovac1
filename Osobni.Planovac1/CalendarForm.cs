@@ -1,11 +1,10 @@
-﻿// File: Form1.cs
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public partial class CalendarForm : Form
+    public partial class CalendarForm : Form //hlavní okno aplikace
     {
         private int month, year;
         private NotifyIcon notifyIcon;
@@ -13,20 +12,15 @@ namespace Osobni.Planovac1
 
         public CalendarForm()
         {
-            InitializeComponent();
-
-            // --- NASTAVENÍ NOTIFIKACÍ ---
-
-            // 1. Vytvoříme ikonku pro oznamovací oblast (systémová lišta)
+            InitializeComponent(); 
+            //Nastavení notifikací
             notifyIcon = new NotifyIcon();
-            notifyIcon.Icon = SystemIcons.Information; // Můžeš použít vlastní ikonu .ico
+            notifyIcon.Icon = SystemIcons.Information; 
             notifyIcon.Visible = true;
             notifyIcon.Text = "Osobní plánovač běží";
-
-            // 2. Vytvoříme časovač, který tiká každou minutu
             notificationTimer = new System.Windows.Forms.Timer();
-            notificationTimer.Interval = 60000; // 60 000 ms = 1 minuta
-            notificationTimer.Tick += CheckForUpcomingEvents; // Metoda, co se spustí
+            notificationTimer.Interval = 60000; 
+            notificationTimer.Tick += CheckForUpcomingEvents; 
             notificationTimer.Start();
 
             // Tlačítko pro vyhledávání
@@ -78,7 +72,7 @@ namespace Osobni.Planovac1
             DisplayMonth(year, month);
         }
 
-        private void DisplayMonth(int year, int month)
+        private void DisplayMonth(int year, int month) //Zobrazí dny v kalendáři
         {
             daycontainer.Controls.Clear();
 
@@ -103,7 +97,7 @@ namespace Osobni.Planovac1
             }
         }
 
-        private void OpenDayDetail(int day)
+        private void OpenDayDetail(int day) //Otevře detail dne
         {
             var schedulerForm = new DailySchedulerForm(day, month, year, () => DisplayMonth(year, month));
             schedulerForm.ShowDialog();
@@ -113,7 +107,7 @@ namespace Osobni.Planovac1
 
         private void label2_Click(object sender, EventArgs e)
         {
-            // Optional: handle label click if needed
+            
         }
 
         private void daycontainer_Paint(object sender, PaintEventArgs e)
@@ -134,18 +128,9 @@ namespace Osobni.Planovac1
 
                 if (todaysEvents.ContainsKey(timeKey))
                 {
-                    // --- OPRAVA ZDE ---
-                    // Musíme sáhnout na vlastnost .Text, protože todaysEvents[timeKey] je objekt EventModel
                     EventModel udalost = todaysEvents[timeKey];
-                    string eventNote = udalost.Text;
-                    // ------------------
-
-                    notifyIcon.ShowBalloonTip(
-                        5000,
-                        "Blíží se událost! ⏳",
-                        $"Za hodinu ({timeKey}): {eventNote} ({udalost.Category})", // Můžeš tam přidat i kategorii!
-                        ToolTipIcon.Info
-                    );
+                    string eventNote = udalost.Text;           
+                    notifyIcon.ShowBalloonTip(5000,"Blíží se událost! ⏳",$"Za hodinu ({timeKey}): {eventNote} ({udalost.Category})",ToolTipIcon.Info);
                 }
             }
         }
