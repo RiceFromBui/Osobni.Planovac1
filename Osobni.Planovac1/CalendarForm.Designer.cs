@@ -1,6 +1,6 @@
 ﻿namespace Osobni.Planovac1
 {
-    partial class Calendar_Form
+    partial class CalendarForm
     {
         /// <summary>
         ///  Required designer variable.

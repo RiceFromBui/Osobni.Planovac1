@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public partial class Calendar_Form : Form
+    public partial class CalendarForm : Form
     {
         private int month, year;
 
-        public Calendar_Form()
+        public CalendarForm()
         {
             InitializeComponent();
         }
