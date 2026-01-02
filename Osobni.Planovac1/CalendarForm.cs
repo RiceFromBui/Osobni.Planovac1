@@ -122,34 +122,29 @@ namespace Osobni.Planovac1
         }
         private void CheckForUpcomingEvents(object sender, EventArgs e)
         {
-            // 1. Zjistíme, kolik je hodin a přičteme 1 hodinu (protože chceme varovat předem)
             DateTime targetTime = DateTime.Now.AddHours(1);
-
-            // Získáme formát času "14:30" (stejný, jako ukládáme do souboru)
             string timeKey = targetTime.ToString("HH:mm");
-
-            // Získáme dnešní datum pro klíč do slovníku
             string dateKey = DateTime.Now.ToString("yyyy-MM-dd");
 
-            // 2. Načteme data
             var allEvents = EventStorage.LoadAll();
 
-            // 3. Podíváme se, jestli pro DNEŠEK existuje nějaký záznam
             if (allEvents.ContainsKey(dateKey))
             {
                 var todaysEvents = allEvents[dateKey];
 
-                // 4. Podíváme se, jestli v dnešním dni existuje událost v tento čas
                 if (todaysEvents.ContainsKey(timeKey))
                 {
-                    string eventNote = todaysEvents[timeKey];
+                    // --- OPRAVA ZDE ---
+                    // Musíme sáhnout na vlastnost .Text, protože todaysEvents[timeKey] je objekt EventModel
+                    EventModel udalost = todaysEvents[timeKey];
+                    string eventNote = udalost.Text;
+                    // ------------------
 
-                    // 5. Zobrazíme bublinu (notifikaci)
                     notifyIcon.ShowBalloonTip(
-                        5000,                          // Jak dlouho má svítit (ms)
-                        "Blíží se událost! ⏳",         // Nadpis
-                        $"Za hodinu ({timeKey}): {eventNote}", // Text zprávy
-                        ToolTipIcon.Info               // Ikona
+                        5000,
+                        "Blíží se událost! ⏳",
+                        $"Za hodinu ({timeKey}): {eventNote} ({udalost.Category})", // Můžeš tam přidat i kategorii!
+                        ToolTipIcon.Info
                     );
                 }
             }

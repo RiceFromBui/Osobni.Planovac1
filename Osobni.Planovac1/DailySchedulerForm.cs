@@ -11,7 +11,15 @@ namespace Osobni.Planovac1
         private int day, month, year;
         private readonly Action reloadCalendar;
         private Dictionary<string, EventModel> dailyEntries = new();
-
+        public DailySchedulerForm(int day, int month, int year, Action reloadCalendar)
+        {
+            InitializeComponent();
+            this.day = day;
+            this.month = month;
+            this.year = year;
+            this.reloadCalendar = reloadCalendar;
+            this.Text = $"Denní plán: {day}.{month}.{year}";
+        }
         private void DailySchedulerForm_Load(object sender, EventArgs e)
         {
             DateTime date = new DateTime(year, month, day);
