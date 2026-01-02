@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public partial class Form1 : Form
+    public partial class Calendar_Form : Form
     {
         private int month, year;
 
-        public Form1()
+        public Calendar_Form()
         {
             InitializeComponent();
         }
@@ -55,7 +55,7 @@ namespace Osobni.Planovac1
             daycontainer.Controls.Clear();
 
             string monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
-            LBDATE.Text = $"{monthName} {year}";
+            lblMonthName.Text = $"{monthName} {year}";
 
             DateTime firstDayOfMonth = new DateTime(year, month, 1);
             int daysInMonth = DateTime.DaysInMonth(year, month);
@@ -68,7 +68,7 @@ namespace Osobni.Planovac1
 
             for (int day = 1; day <= daysInMonth; day++)
             {
-                var dayControl = new UserControl1Days();
+                var dayControl = new DayControl();
                 dayControl.days(day, month, year);
                 dayControl.DayClicked += (s, selectedDay) => OpenDayDetail(selectedDay);
                 daycontainer.Controls.Add(dayControl);
@@ -86,6 +86,11 @@ namespace Osobni.Planovac1
         private void label2_Click(object sender, EventArgs e)
         {
             // Optional: handle label click if needed
+        }
+
+        private void daycontainer_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

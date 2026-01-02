@@ -1,6 +1,6 @@
 ﻿namespace Osobni.Planovac1
 {
-    partial class UserControl1Days
+    partial class DayControl
     {
         /// <summary> 
         /// Vyžaduje se proměnná návrháře.

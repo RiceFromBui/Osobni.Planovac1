@@ -4,12 +4,12 @@ using System.Windows.Forms;
 
 namespace Osobni.Planovac1
 {
-    public partial class UserControl1Days : UserControl
+    public partial class DayControl : UserControl
     {
         public int DayNumber { get; private set; }
         public event EventHandler<int> DayClicked;
 
-        public UserControl1Days()
+        public DayControl()
         {
             InitializeComponent();
             this.Click += OnControlClick;

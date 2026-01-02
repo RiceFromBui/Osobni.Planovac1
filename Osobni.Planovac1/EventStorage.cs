@@ -1,5 +1,4 @@
-﻿// File: EventStorage.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -8,22 +7,22 @@ namespace Osobni.Planovac1
 {
     public static class EventStorage
     {
-        private static readonly string filePath = "events.json";
+        private const string FILE_NAME = "events.json";
 
         public static Dictionary<string, Dictionary<string, string>> LoadAll()
         {
-            if (!File.Exists(filePath))
-                return new();
+            if (!File.Exists(FILE_NAME))
+                return new Dictionary<string, Dictionary<string, string>>();
 
-            string json = File.ReadAllText(filePath);
+            string json = File.ReadAllText(FILE_NAME);
             return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(json)
-                   ?? new();
+                   ?? new Dictionary<string, Dictionary<string, string>>();
         }
 
         public static void SaveAll(Dictionary<string, Dictionary<string, string>> allData)
         {
             string json = JsonSerializer.Serialize(allData, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(FILE_NAME, json);
         }
 
         public static void SaveAllForDate(DateTime date, Dictionary<string, string> entries)
@@ -48,8 +47,8 @@ namespace Osobni.Planovac1
             }
             return string.Empty;
         }
-    
-    public static void ExportDay(DateTime date, string path)
+
+        public static void ExportDay(DateTime date, string path)
         {
             var all = LoadAll();
             string key = date.ToString("yyyy-MM-dd");
@@ -86,6 +85,5 @@ namespace Osobni.Planovac1
 
             File.WriteAllLines(path, lines);
         }
-
     }
 }

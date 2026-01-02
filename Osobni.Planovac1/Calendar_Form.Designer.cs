@@ -1,6 +1,6 @@
 ﻿namespace Osobni.Planovac1
 {
-    partial class Form1
+    partial class Calendar_Form
     {
         /// <summary>
         ///  Required designer variable.
@@ -38,7 +38,7 @@
             label5 = new Label();
             label6 = new Label();
             label7 = new Label();
-            LBDATE = new Label();
+            lblMonthName = new Label();
             SuspendLayout();
             // 
             // daycontainer
@@ -47,6 +47,7 @@
             daycontainer.Name = "daycontainer";
             daycontainer.Size = new Size(1104, 711);
             daycontainer.TabIndex = 0;
+            daycontainer.Paint += daycontainer_Paint;
             // 
             // btnnext
             // 
@@ -138,23 +139,23 @@
             label7.TabIndex = 9;
             label7.Text = "Sobota";
             // 
-            // LBDATE
+            // lblMonthName
             // 
-            LBDATE.AutoSize = true;
-            LBDATE.Font = new Font("Poppins", 18F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            LBDATE.Location = new Point(490, 23);
-            LBDATE.Name = "LBDATE";
-            LBDATE.Size = new Size(144, 42);
-            LBDATE.TabIndex = 10;
-            LBDATE.Text = "MESIC ROK";
-            LBDATE.TextAlign = ContentAlignment.TopCenter;
+            lblMonthName.AutoSize = true;
+            lblMonthName.Font = new Font("Poppins", 18F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            lblMonthName.Location = new Point(490, 23);
+            lblMonthName.Name = "lblMonthName";
+            lblMonthName.Size = new Size(144, 42);
+            lblMonthName.TabIndex = 10;
+            lblMonthName.Text = "MESIC ROK";
+            lblMonthName.TextAlign = ContentAlignment.TopCenter;
             // 
-            // Form1
+            // Calendar_Form
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1144, 871);
-            Controls.Add(LBDATE);
+            Controls.Add(lblMonthName);
             Controls.Add(label7);
             Controls.Add(label5);
             Controls.Add(label6);
@@ -166,7 +167,7 @@
             Controls.Add(btnnext);
             Controls.Add(daycontainer);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Name = "Form1";
+            Name = "Calendar_Form";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Form1_Load;
@@ -186,6 +187,6 @@
         private Label label5;
         private Label label6;
         private Label label7;
-        private Label LBDATE;
+        private Label lblMonthName;
     }
 }
