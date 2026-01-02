@@ -16,15 +16,5 @@ namespace Osobni.Planovac1
         {
             InitializeComponent();
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UserControlBlank_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
